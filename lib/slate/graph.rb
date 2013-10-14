@@ -75,6 +75,7 @@ module Slate
     def connection
       @connection ||= Faraday.new do |faraday|
         faraday.options[:timeout] = @client.timeout || 10
+        faraday.token_auth(@client.token_auth) unless @client.token_auth.nil?
         faraday.adapter Faraday.default_adapter
       end
     end
