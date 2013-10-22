@@ -65,7 +65,9 @@ module Slate
     #   download(:json)
     #   # => '{"targets":[]}'
     def download(format=:png)
-      connection.get(url(format)).body
+      url = url(format)
+      p url
+      connection.get(url).body
     rescue Faraday::Error::TimeoutError
       raise Slate::Error::TimeoutError
     end
