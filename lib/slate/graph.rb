@@ -66,7 +66,6 @@ module Slate
     #   # => '{"targets":[]}'
     def download(format=:png)
       url = url(format)
-      p url
       connection.get(url).body
     rescue Faraday::Error::TimeoutError
       raise Slate::Error::TimeoutError
@@ -77,6 +76,7 @@ module Slate
     def connection
       @connection ||= Faraday.new do |faraday|
         faraday.options[:timeout] = @client.timeout || 10
+        faraday.options[:params_encoder] = Faraday::FlatParamsEncoder
         faraday.token_auth(@client.token_auth) unless @client.token_auth.nil?
         faraday.basic_auth(@client.username, @client.password) unless @client.username.nil?
         faraday.adapter Faraday.default_adapter
